@@ -23,6 +23,6 @@ public void Init(WaypointManager.Path path, Action onEnemyUnitKilled)
         while (_currentWave < numberOfWaves)
         {
             yield return SpawnWave(_currentWave++);
-            yield return new WaitForSeconds(secondsBetweenWaves);
+            yield return new WaitForSeconds(0.5f);
         }
     }
