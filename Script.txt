@@ -1,0 +1,28 @@
+public void Init(WaypointManager.Path path, Action onEnemyUnitKilled)
+    {
+        SaveSystem ss = ServiceLocator.Get<SaveSystem>();
+        LoadedData loadedData = ss.LoadJson<LoadedData>("level_1.txt");
+        _path = path;
+        _enemyUnitKilled = onEnemyUnitKilled;
+
+        numberOfWaves = loadedData.numberOfWaves;
+        enemiesPerWave = loadedData.enemiesPerWave;
+        secondsBetweenWaves = loadedData.secondsBetweenWaves;
+        secondsStartDelay = loadedData.secondsStartDelay;
+        pathId = loadedData.pathId;
+    }
+
+    public void StartSpawner()
+    {
+        StartCoroutine("BeginWaveSpawn");
+    }
+
+    private IEnumerator BeginWaveSpawn()
+    {
+        yield return new WaitForSeconds(secondsStartDelay);
+        while (_currentWave < numberOfWaves)
+        {
+            yield return SpawnWave(_currentWave++);
+            yield return new WaitForSeconds(secondsBetweenWaves);
+        }
+    }
